@@ -62,10 +62,10 @@
 <p>No recopilamos, almacenamos ni transmitimos estos datos a ningún servidor propio.</p>
 
 <h2>3. Chat en tiempo real</h2>
-<p>Los mensajes que envías en el chat comunitario se comparten en tiempo real con otros usuarios activos a través del servicio <strong>Ably</strong> (ably.com). Para ello:</p>
+<p>Los mensajes que envías en el chat comunitario se guardan y comparten en tiempo real con otros usuarios activos a través del servicio <strong>Supabase</strong> (supabase.com). Para ello:</p>
 <ul>
-  <li>Tu apodo y mensaje se envían a los servidores de Ably y se redistribuyen a los demás usuarios conectados</li>
-  <li>Ably puede almacenar un historial limitado de mensajes (últimos 100) para que los nuevos usuarios vean conversaciones recientes</li>
+  <li>Tu apodo y mensaje se envían a la base de datos de Supabase y se redistribuyen en tiempo real a los demás usuarios conectados</li>
+  <li>Supabase almacena el historial de mensajes para que puedas ver las conversaciones recientes</li>
   <li>No se comparte tu ubicación, dirección IP ni ningún dato personal adicional</li>
   <li>Puedes borrar tu historial local en cualquier momento con el botón 🗑️ del chat</li>
 </ul>
@@ -73,11 +73,11 @@
 <h2>4. Servicios de terceros</h2>
 <p>La aplicación utiliza los siguientes servicios externos:</p>
 <ul>
-  <li><strong>Ably</strong> (ably.com) — Mensajería en tiempo real para el chat. <a href="https://ably.com/privacy" target="_blank">Política de privacidad de Ably</a></li>
+  <li><strong>Supabase</strong> (supabase.com) — Base de datos y mensajería en tiempo real para el chat. <a href="https://supabase.com/privacy" target="_blank">Política de privacidad de Supabase</a></li>
   <li><strong>Giphy</strong> (giphy.com) — Búsqueda y envío de GIFs animados en el chat. <a href="https://privacy.giphy.com" target="_blank">Política de privacidad de Giphy</a></li>
   <li><strong>API de tasa de cambio</strong> — Consulta la tasa de cambio USD/BS desde fuentes públicas externas (pydolarve.org, ve.dolarapi.com). No se envía información personal en estas consultas.</li>
 </ul>
-<p>Ninguno de estos servicios recibe información personal identificable más allá de la necesaria para su función (ej. el texto del mensaje para Ably, el término de búsqueda para Giphy).</p>
+<p>Ninguno de estos servicios recibe información personal identificable más allá de la necesaria para su función (ej. el texto del mensaje para Supabase, el término de búsqueda para Giphy).</p>
 
 <h2>5. Publicidad</h2>
 <p>Listamigo <strong>no muestra publicidad</strong> de terceros ni utiliza redes publicitarias.</p>
