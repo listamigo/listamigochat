@@ -1,0 +1,11 @@
+node_modules/
+dist/*.js.map
+dist/*.js
+!dist/app.js
+dist/meta.json
+*.tar.gz
+.env
+src/config/keys.ts
+!src/config/keys.example.ts
+.aider*
+apk/

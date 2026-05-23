@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Política de Privacidad - Listamigo</title>
+  <style>
+    :root {
+      --bg: #0A0A0F;
+      --bg-card: #14141F;
+      --text: #E8E6E3;
+      --text-muted: #888;
+      --border: #1E1E2E;
+      --accent: #D4AF37;
+    }
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #F5F5F0;
+        --bg-card: #FFFFFF;
+        --text: #1A1A2E;
+        --text-muted: #888;
+        --border: #E0E0D8;
+        --accent: #B8941E;
+      }
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 24px 16px 60px;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.7;
+    }
+    h1 { font-size: 1.5rem; margin-bottom: 4px; color: var(--accent); }
+    h2 { font-size: 1.1rem; margin-top: 28px; margin-bottom: 8px; }
+    p, li { font-size: 0.9rem; color: var(--text); }
+    hr { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+    .updated { font-size: 0.8rem; color: var(--text-muted); margin-top: 0; }
+    a { color: var(--accent); }
+  </style>
+</head>
+<body>
+
+<h1>Listamigo</h1>
+<p class="updated">Última actualización: 23 de mayo de 2026</p>
+
+<h2>1. Introducción</h2>
+<p>Listamigo es una aplicación de lista de compras con funciones de finanzas personales, calculadora y chat comunitario. Esta política explica qué datos se recopilan, cómo se usan y cómo se almacenan.</p>
+
+<h2>2. Datos que almacena la aplicación</h2>
+<p>Toda la información que ingresas se guarda <strong>exclusivamente en tu dispositivo</strong> (almacenamiento local del navegador):</p>
+<ul>
+  <li>Listas de compras con productos, cantidades y precios</li>
+  <li>Transacciones financieras (ingresos y gastos)</li>
+  <li>Metas de ahorro y deudas</li>
+  <li>Tasa de cambio preferida</li>
+  <li>Tema visual (oscuro/claro)</li>
+  <li>Preferencias del chat (apodo, color, emoji)</li>
+  <li>Mensajes del chat</li>
+</ul>
+<p>No recopilamos, almacenamos ni transmitimos estos datos a ningún servidor propio.</p>
+
+<h2>3. Chat en tiempo real</h2>
+<p>Los mensajes que envías en el chat comunitario se comparten en tiempo real con otros usuarios activos a través del servicio <strong>Ably</strong> (ably.com). Para ello:</p>
+<ul>
+  <li>Tu apodo y mensaje se envían a los servidores de Ably y se redistribuyen a los demás usuarios conectados</li>
+  <li>Ably puede almacenar un historial limitado de mensajes (últimos 100) para que los nuevos usuarios vean conversaciones recientes</li>
+  <li>No se comparte tu ubicación, dirección IP ni ningún dato personal adicional</li>
+  <li>Puedes borrar tu historial local en cualquier momento con el botón 🗑️ del chat</li>
+</ul>
+
+<h2>4. Servicios de terceros</h2>
+<p>La aplicación utiliza los siguientes servicios externos:</p>
+<ul>
+  <li><strong>Ably</strong> (ably.com) — Mensajería en tiempo real para el chat. <a href="https://ably.com/privacy" target="_blank">Política de privacidad de Ably</a></li>
+  <li><strong>Giphy</strong> (giphy.com) — Búsqueda y envío de GIFs animados en el chat. <a href="https://privacy.giphy.com" target="_blank">Política de privacidad de Giphy</a></li>
+  <li><strong>API de tasa de cambio</strong> — Consulta la tasa de cambio USD/BS desde fuentes públicas externas (pydolarve.org, ve.dolarapi.com). No se envía información personal en estas consultas.</li>
+</ul>
+<p>Ninguno de estos servicios recibe información personal identificable más allá de la necesaria para su función (ej. el texto del mensaje para Ably, el término de búsqueda para Giphy).</p>
+
+<h2>5. Publicidad</h2>
+<p>Listamigo <strong>no muestra publicidad</strong> de terceros ni utiliza redes publicitarias.</p>
+
+<h2>6. Cookies</h2>
+<p>La aplicación <strong>no utiliza cookies</strong> propias ni de terceros.</p>
+
+<h2>7. Seguridad</h2>
+<p>La aplicación se sirve exclusivamente mediante HTTPS. Las claves de API de servicios externos están incluidas en el código por necesidad técnica (la app es 100% del lado del cliente) y se limitan a los servicios específicos que la app necesita.</p>
+
+<h2>8. Derechos del usuario</h2>
+<p>Puesto que todos tus datos se almacenan localmente en tu dispositivo, tú tienes el control total sobre ellos:</p>
+<ul>
+  <li><strong>Acceder</strong> — Tus datos son visibles dentro de la aplicación</li>
+  <li><strong>Exportar</strong> — Puedes descargar un respaldo completo de tus datos desde la sección de Ajustes</li>
+  <li><strong>Eliminar</strong> — Puedes borrar cualquier dato individualmente o restaurar desde un respaldo. Para eliminar todos los datos, borra los datos de la aplicación desde los ajustes de tu navegador o dispositivo</li>
+  <li><strong>No hay cuentas de usuario</strong> — No almacenamos correos electrónicos, contraseñas ni ningún método de autenticación</li>
+</ul>
+
+<h2>9. Cambios en esta política</h2>
+<p>Esta política puede actualizarse ocasionalmente. La fecha de la última actualización aparece al inicio del documento. El uso continuado de la aplicación después de los cambios constituye la aceptación de la nueva política.</p>
+
+<h2>10. Contacto</h2>
+<p>Si tienes preguntas sobre esta política de privacidad, puedes contactarnos a través del repositorio del proyecto: <a href="https://github.com/floresloquillo5-max/milistachat" target="_blank">github.com/floresloquillo5-max/milistachat</a></p>
+
+<hr>
+<p style="font-size:0.8rem;color:#888;">Listamigo — Hecho con ❤️ por Eliezer David Malave</p>
+
+</body>
+</html>

@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "io.github.floresloquillo5_max.twa",
+        "sha256_cert_fingerprints": ["DA:35:9C:1E:36:38:49:8A:74:3D:71:6A:D5:AD:4C:40:22:F4:2B:FC:33:45:18:42:93:E3:39:49:3E:40:C3:34"]
+      }
+    }]
