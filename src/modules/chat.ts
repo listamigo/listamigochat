@@ -252,15 +252,9 @@ function sendMessage(gifUrl?: string, imageUrl?: string): void {
     msg.image = { url: imageUrl };
   }
 
-  const messages = loadMessages();
-  messages.push(msg);
-  if (messages.length > MAX_MESSAGES) messages.splice(0, messages.length - MAX_MESSAGES);
-  saveMessages(messages);
-  appendMessage(msg);
   if (input) input.value = '';
 
   if (supabase) {
-    sentIds.add(msg.id);
     supabase.from('messages').insert([{
       nickname: msg.nickname,
       text: msg.text,
@@ -269,7 +263,10 @@ function sendMessage(gifUrl?: string, imageUrl?: string): void {
       gif_url: msg.gif?.url || null,
       image_url: msg.image?.url || null
     }]).then(({ error }) => {
-      if (error) console.error('Error inserting message:', error);
+      if (error) {
+        console.error('Error inserting message:', error);
+        showToast('⚠️ Error al enviar el mensaje');
+      }
     });
   }
 }
