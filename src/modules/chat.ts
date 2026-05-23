@@ -653,7 +653,7 @@ function handleImageSelected(event: Event): void {
   reader.onload = (e) => {
     const img = new Image();
     img.onload = () => {
-      const MAX = 800;
+      const MAX = 1200;
       let { width, height } = img;
       if (width > MAX || height > MAX) {
         const ratio = Math.min(MAX / width, MAX / height);
@@ -667,7 +667,7 @@ function handleImageSelected(event: Event): void {
       const ctx = canvas.getContext('2d')!;
       ctx.drawImage(img, 0, 0, width, height);
 
-      const dataUrl = canvas.toDataURL('image/jpeg', 0.5);
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
       imagePickerOpen = false;
       input.value = '';
       sendMessage(undefined, dataUrl);
