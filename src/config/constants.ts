@@ -30,7 +30,7 @@ export const SAVINGS_TIPS = [
   '💡 Lleva tu almuerzo al trabajo al menos 3 veces por semana.',
 ];
 
-export { ABLY_CONFIG, GIPHY_CONFIG, ADMIN_CODE } from './keys';
+export { SUPABASE_CONFIG, GIPHY_CONFIG, ADMIN_CODE } from './keys';
 
 export const LOCAL_STORAGE_KEYS = {
   marketLists: 'market_lists_v2',

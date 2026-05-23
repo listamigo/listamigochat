@@ -1,5 +1,6 @@
-export const ABLY_CONFIG = {
-  key: 'tu-ably-api-key-aqui',
+export const SUPABASE_CONFIG = {
+  url: 'tu-supabase-url-aqui',
+  key: 'tu-supabase-anon-key-aqui',
   channelName: 'listamigo-chat',
 };
 

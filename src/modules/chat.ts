@@ -1,5 +1,5 @@
-import * as Ably from 'ably';
-import { ABLY_CONFIG, GIPHY_CONFIG, ADMIN_CODE } from '../config/constants';
+import { createClient, SupabaseClient, RealtimeChannel } from '@supabase/supabase-js';
+import { SUPABASE_CONFIG, GIPHY_CONFIG, ADMIN_CODE } from '../config/constants';
 import { showConfirmModal, showToast } from '../utils/dom';
 
 interface ChatMessage {
@@ -27,7 +27,8 @@ const COLORS = [
 
 const EMOJIS = ['😀', '🎉', '👍', '❤️', '🔥', '😎', '💪', '🎯'];
 
-let ablyChannel: Ably.RealtimeChannel | null = null;
+let supabase: SupabaseClient | null = null;
+let supabaseChannel: RealtimeChannel | null = null;
 let currentNickname = '';
 let currentColor = '';
 let currentEmoji = '';
@@ -192,22 +193,20 @@ function receiveMessage(data: unknown): void {
 }
 
 function enterPresence(nick: string): void {
-  if (!ablyChannel || presenceEntered) return;
+  if (!supabaseChannel || presenceEntered) return;
   presenceEntered = true;
   try {
-    ablyChannel.presence.enter(nick);
-  } catch { /* presence not enabled */ }
+    supabaseChannel.track({ nickname: nick, enteredAt: Date.now() });
+  } catch (e) {
+    console.error('Presence track error:', e);
+  }
 }
 
 async function isNicknameTaken(nick: string): Promise<boolean> {
-  if (!ablyChannel) return false;
+  if (!supabaseChannel) return false;
   try {
-    const result = await Promise.race([
-      ablyChannel.presence.get(),
-      new Promise<null>(resolve => setTimeout(() => resolve(null), 5000)),
-    ]);
-    if (!result) return false;
-    return result.some(m => m.data === nick);
+    const presences = supabaseChannel.presenceState();
+    return Object.values(presences).flat().some((p: any) => p.nickname === nick);
   } catch {
     return false;
   }
@@ -260,9 +259,18 @@ function sendMessage(gifUrl?: string, imageUrl?: string): void {
   appendMessage(msg);
   if (input) input.value = '';
 
-  if (ablyChannel) {
+  if (supabase) {
     sentIds.add(msg.id);
-    ablyChannel.publish('message', msg);
+    supabase.from('messages').insert([{
+      nickname: msg.nickname,
+      text: msg.text,
+      color: msg.color || null,
+      emoji: msg.emoji || null,
+      gif_url: msg.gif?.url || null,
+      image_url: msg.image?.url || null
+    }]).then(({ error }) => {
+      if (error) console.error('Error inserting message:', error);
+    });
   }
 }
 
@@ -368,7 +376,6 @@ function selectEmoji(e: string): void {
   renderMessages();
 }
 
-let ablyRealtime: Ably.Realtime | null = null;
 let connectTimeout: ReturnType<typeof setTimeout> | null = null;
 
 function setConnectionStatus(ok: boolean): void {
@@ -382,85 +389,106 @@ function setConnectionStatus(ok: boolean): void {
 }
 
 async function fetchHistory(): Promise<void> {
-  if (!ablyChannel) return;
+  if (!supabase) return;
   try {
-    const historyPage = await ablyChannel.history({ limit: 100 });
-    const historyMsgs: ChatMessage[] = [];
+    const { data, error } = await supabase
+      .from('messages')
+      .select('*')
+      .order('created_at', { ascending: true })
+      .limit(100);
+
+    if (error) throw error;
+    if (!data || data.length === 0) return;
+
+    const historyMsgs: ChatMessage[] = data.map((newRow: any) => ({
+      id: String(newRow.id),
+      nickname: newRow.nickname,
+      text: newRow.text || '',
+      timestamp: newRow.created_at ? new Date(newRow.created_at).getTime() : Date.now(),
+      color: newRow.color || undefined,
+      emoji: newRow.emoji || undefined,
+      gif: newRow.gif_url ? { url: newRow.gif_url } : undefined,
+      image: newRow.image_url ? { url: newRow.image_url } : undefined
+    }));
+
     const resetAt = getResetAt();
-    historyPage.items.forEach((item: Ably.InboundMessage) => {
-      if (item.data) {
-        const m = item.data as ChatMessage;
-        if (m.timestamp > resetAt) historyMsgs.push(m);
-      }
-    });
-    if (historyMsgs.length === 0) return;
-    historyMsgs.sort((a, b) => a.timestamp - b.timestamp);
+    const filtered = historyMsgs.filter(m => m.timestamp > resetAt);
+    if (filtered.length === 0) return;
+
     const local = loadMessages();
     const merged = [...local];
-    for (const hMsg of historyMsgs) {
+    for (const hMsg of filtered) {
       if (!merged.some(m => m.id === hMsg.id)) merged.push(hMsg);
     }
     merged.sort((a, b) => a.timestamp - b.timestamp);
     if (merged.length > MAX_MESSAGES) merged.splice(0, merged.length - MAX_MESSAGES);
     saveMessages(merged);
     renderMessages();
-  } catch { /* history not available */ }
+  } catch (err) {
+    console.error('History fetch error:', err);
+  }
 }
 
-function connectAbly(): void {
-  if (!ABLY_CONFIG.key) {
+function connectSupabase(): void {
+  if (!SUPABASE_CONFIG.url || !SUPABASE_CONFIG.key) {
     setConnectionStatus(false);
     return;
   }
 
   try {
-    ablyRealtime = new Ably.Realtime({ key: ABLY_CONFIG.key });
-    const conn = ablyRealtime.connection;
-
-    const updateStatusFromState = () => {
-      if (conn.state === 'connected') {
-        setConnectionStatus(true);
-      } else if (conn.state === 'connecting') {
-        setConnectionStatus(false);
-      } else if (conn.state === 'failed') {
-        setConnectionStatus(false);
-      } else {
-        setConnectionStatus(false);
+    supabase = createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.key);
+    supabaseChannel = supabase.channel(SUPABASE_CONFIG.channelName, {
+      config: {
+        presence: {
+          key: currentNickname
+        }
       }
-    };
-
-    conn.on('connecting', () => setConnectionStatus(false));
-    conn.on('connected', () => {
-      setConnectionStatus(true);
-      setTimeout(fetchHistory, 2000);
-      if (currentNickname) enterPresence(currentNickname);
     });
-    conn.on('failed', (err: { reason?: { message?: string } }) => {
-      setConnectionStatus(false);
-    });
-    conn.on('disconnected', () => setConnectionStatus(false));
 
-    updateStatusFromState();
-    setTimeout(updateStatusFromState, 1000);
-
-    ablyChannel = ablyRealtime.channels.get(ABLY_CONFIG.channelName);
-    ablyChannel.subscribe('message', (message: Ably.InboundMessage) => {
-      setConnectionStatus(true);
-      const data = message.data;
-      if (data && typeof data === 'object' && (data as Record<string, unknown>).type === 'system') {
-        const sys = data as Record<string, unknown>;
-        if (sys.action === 'reset') {
+    supabaseChannel
+      .on(
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'messages' },
+        (payload) => {
+          setConnectionStatus(true);
+          const newRow = payload.new;
+          const msg: ChatMessage = {
+            id: String(newRow.id),
+            nickname: newRow.nickname,
+            text: newRow.text || '',
+            timestamp: newRow.created_at ? new Date(newRow.created_at).getTime() : Date.now(),
+            color: newRow.color || undefined,
+            emoji: newRow.emoji || undefined,
+            gif: newRow.gif_url ? { url: newRow.gif_url } : undefined,
+            image: newRow.image_url ? { url: newRow.image_url } : undefined
+          };
+          receiveMessage(msg);
+        }
+      )
+      .on('broadcast', { event: 'system' }, ({ payload }) => {
+        if (payload && payload.action === 'reset') {
           localStorage.setItem(RESET_KEY, String(Date.now()));
           saveMessages([]);
           renderMessages();
+          showToast('🔄 El chat fue reseteado globalmente');
         }
-        return;
-      }
-      receiveMessage(message.data);
-    });
+      })
+      .on('presence', { event: 'sync' }, () => {
+        setConnectionStatus(true);
+      })
+      .subscribe((status) => {
+        if (status === 'SUBSCRIBED') {
+          setConnectionStatus(true);
+          setTimeout(fetchHistory, 1000);
+          if (currentNickname) enterPresence(currentNickname);
+        } else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
+          setConnectionStatus(false);
+        }
+      });
+
   } catch (err) {
     setConnectionStatus(false);
-    console.error('Ably init error:', err);
+    console.error('Supabase init error:', err);
   }
 }
 
@@ -485,16 +513,32 @@ function resetChatForAll(): void {
   }
   showConfirmModal(
     '🔄 Resetear chat global',
-    '¿Resetear el chat para TODOS los usuarios? Esta acción no se puede deshacer.',
+    '¿Resetear el chat para TODOS los usuarios? Esta acción borrará la base de datos de mensajes.',
     'Resetear',
-    () => {
-      localStorage.setItem(RESET_KEY, String(Date.now()));
-      if (ablyChannel) {
-        ablyChannel.publish('message', { type: 'system', action: 'reset' });
+    async () => {
+      if (!supabase || !supabaseChannel) return;
+      try {
+        const { error } = await supabase
+          .from('messages')
+          .delete()
+          .neq('id', 0); // deletes all rows since all IDs are positive (>0)
+
+        if (error) throw error;
+
+        await supabaseChannel.send({
+          type: 'broadcast',
+          event: 'system',
+          payload: { action: 'reset' }
+        });
+
+        localStorage.setItem(RESET_KEY, String(Date.now()));
+        saveMessages([]);
+        renderMessages();
+        showToast('✅ Chat reseteado para todos');
+      } catch (err) {
+        console.error('Error resetting chat:', err);
+        showToast('⚠️ Error al resetear el chat');
       }
-      saveMessages([]);
-      renderMessages();
-      showToast('✅ Chat reseteado para todos');
     }
   );
 }
@@ -658,7 +702,7 @@ export function setupChat(): void {
   }
 
   renderMessages();
-  connectAbly();
+  connectSupabase();
 
   document.getElementById('chatSendBtn')?.addEventListener('click', () => sendMessage());
   document.getElementById('chatInput')?.addEventListener('keydown', handleInputKeydown);

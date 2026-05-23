@@ -19,6 +19,7 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.106.1",
     "ably": "^2.21.0"
   }
 }
