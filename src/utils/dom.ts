@@ -1,11 +1,3 @@
-export function $(selector: string, parent: ParentNode = document): HTMLElement | null {
-  return parent.querySelector(selector) as HTMLElement | null;
-}
-
-export function $$(selector: string, parent: ParentNode = document): HTMLElement[] {
-  return Array.from(parent.querySelectorAll(selector)) as HTMLElement[];
-}
-
 export function createElement<K extends keyof HTMLElementTagNameMap>(
   tag: K,
   attrs: Partial<HTMLElementTagNameMap[K]> & Record<string, string | number | boolean> = {},
@@ -108,20 +100,6 @@ export function trapTabFocus(e: KeyboardEvent, containerId: string): void {
     e.preventDefault();
     first.focus();
   }
-}
-
-export function delegate(
-  parent: HTMLElement,
-  selector: string,
-  eventType: string,
-  handler: (target: HTMLElement, event: Event) => void
-): void {
-  parent.addEventListener(eventType, (e: Event) => {
-    const target = (e.target as HTMLElement).closest(selector) as HTMLElement | null;
-    if (target && parent.contains(target)) {
-      handler(target, e);
-    }
-  });
 }
 
 let confirmCallback: (() => void) | null = null;

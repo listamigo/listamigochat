@@ -1,6 +1,6 @@
 import { AppState } from '../state';
 import { saveLists } from '../utils/storage';
-import { escapeHtml, formatNumber, formatUSD, parseFloatFromLocalString } from '../utils/format';
+import { escapeHtml, formatNumber, formatUSD, formatBS, parseFloatFromLocalString } from '../utils/format';
 import { $empty, createElement, showToast, truncate, showConfirmModal } from '../utils/dom';
 import { updateTotals } from './finances';
 
@@ -83,10 +83,13 @@ export function renderProducts(): void {
     nameSpan.innerHTML = escapeHtml(p.name) + unitBadge;
     info.appendChild(nameSpan);
 
+    const rate = AppState.state.settings.dollarRate;
+    const itemTotal = p.qty * p.price;
     const details = createElement('div', { className: 'product-details' });
     const fmtPrice = formatNumber(p.price) + '$';
-    const fmtTotal = formatNumber(p.qty * p.price) + '$';
-    details.innerHTML = `<span>${p.qty}x${fmtPrice}</span><span class="product-details-total">${fmtTotal}</span>`;
+    const fmtTotal = formatNumber(itemTotal) + '$';
+    const fmtBs = rate > 0 ? formatBS(itemTotal * rate) : '';
+    details.innerHTML = `<span>${p.qty}x${fmtPrice}</span><span class="product-details-total">${fmtTotal}${fmtBs ? ' <span class="product-details-bs">' + fmtBs + '</span>' : ''}</span>`;
     info.appendChild(details);
 
     item.appendChild(checkLabel);

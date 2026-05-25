@@ -9,6 +9,7 @@ import { addTransaction, useCurrentListTotal, setSavingsGoal, deleteSavingsGoal,
 import { renderCalendar, navigateCalendar, selectCalendarDay, toggleQuickForm, closeQuickForm, saveQuickTransaction, exportCalendarMonth, toggleMonthPicker, jumpToMonth, deleteFromCalendar } from './modules/calendar';
 import { setupNotifications } from './modules/notifications';
 
+/* BARCODE — NO ELIMINAR (reservado para futuro) */
 import { setupBarcodeScanner, stopScanner } from './modules/scanner';
 import { setupChat } from './modules/chat';
 import { backupAllData, restoreAllData, handleRestoreFile } from './modules/backup';
@@ -43,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.key === 'Enter') confirmPromptModal();
   });
 
-  /* Scanner close */
+  /* BARCODE — NO ELIMINAR (reservado para futuro) - Scanner close */
   document.getElementById('scannerCloseBtn')?.addEventListener('click', () => {
     stopScanner();
     showToast('✋ Escaneo cancelado');
@@ -353,7 +354,7 @@ document.addEventListener('DOMContentLoaded', () => {
   /* Deferred setup */
   setTimeout(() => {
     setupChat();
-    setupBarcodeScanner();
+    setupBarcodeScanner(); /* BARCODE — NO ELIMINAR (reservado para futuro) */
     setupNotifications();
     renderTransactionHistory();
     renderCharts();

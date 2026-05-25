@@ -28,6 +28,16 @@ export const SAVINGS_TIPS = [
   '💡 Usa efectivo para controlar mejor tus gastos.',
   '💡 Compra al por mayor productos no perecederos.',
   '💡 Lleva tu almuerzo al trabajo al menos 3 veces por semana.',
+  '💡 Compra en mercados municipales o ferias — los precios son 30-40% más baratos que en supermercados.',
+  '💡 Diversifica tu ahorro: combina dólares en efectivo, divisas en bancos y compra venta en momentos de baja.',
+  '💡 Aprovecha promociones "combos" y "remates" en mayoristas para productos de limpieza e higiene.',
+  '💡 Usa bodegones o abastos pequeños para el diario — tienen mejor precio en pan, huevos y leche.',
+  '💡 Compra ropa y zapatos en temporada baja (enero-febrero, julio-agosto) cuando hay menos demanda.',
+  '💡 Ahorra en transporte: usa rutas compartidas en vez de taxi o delivery costoso.',
+  '💡 Evita recargas y paquetes de datos innecesarios — usa WiFi siempre que puedas.',
+  '💡 Prepara comidas rendidoras: sopas, pastas, caraotas, arroz con pollo rinden más que carnes preparadas.',
+  '💡 Pide factura y revisa el vuelto — pequeñas pérdidas por redondeo se acumulan.',
+  '💡 Organiza compras grupales con vecinos o familiares en distribuidoras para bajar el costo por unidad.',
 ];
 
 export { SUPABASE_CONFIG, GIPHY_CONFIG, ADMIN_CODE } from './keys';
@@ -45,6 +55,7 @@ export const LOCAL_STORAGE_KEYS = {
   oldMarketProducts: 'market_products',
 } as const;
 
+/* ═══ BARCODE — NO ELIMINAR (reservado para futuro) ═══ */
 export const BARCODE_PRODUCT_DB: Record<string, { name: string; price: number; unit: string }> = {
   '7591000110165': { name: 'Harina PAN (1kg)', price: 2.50, unit: '1kg' },
   '7591000110172': { name: 'Harina PAN (500g)', price: 1.50, unit: '500g' },

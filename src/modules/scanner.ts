@@ -1,3 +1,8 @@
+/* ══════════════════════════════════════════════════════════════
+   BARCODE SCANNER — ⚠️ NO ELIMINAR
+   Código reservado para implementación futura del escáner de
+   códigos de barras. No eliminar sin orden explícita.
+   ══════════════════════════════════════════════════════════════ */
 import { AppState } from '../state';
 import { showToast } from '../utils/dom';
 import { BARCODE_PRODUCT_DB } from '../config/constants';

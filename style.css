@@ -881,13 +881,10 @@ body.light-theme .chat-header h3 {
 }
 
 /* ============================================================
-   BARCODE ROW
+   BARCODE ROW — NO ELIMINAR (reservado para futuro, oculto)
    ============================================================ */
 .barcode-row {
-  display: flex;
-  gap: var(--space-2);
-  align-items: flex-end;
-  margin-bottom: var(--space-3);
+  display: none;
 }
 
 .scan-btn {
@@ -1038,6 +1035,15 @@ body.light-theme .chat-header h3 {
   font-weight: 600;
   color: var(--text-secondary);
   white-space: nowrap;
+  text-align: right;
+}
+
+.product-details-bs {
+  display: block;
+  font-size: 0.6rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  line-height: 1;
 }
 
 .product-actions {
@@ -3595,32 +3601,6 @@ body.light-theme .chat-header h3 {
   line-height: 1.4;
 }
 
-.chat-footer-clear {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  border: none;
-  background: var(--danger-subtle);
-  color: var(--danger);
-  font-size: 0.9rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  transition: background var(--transition), transform var(--transition);
-}
-
-.chat-footer-clear:hover {
-  background: var(--danger);
-  color: #fff;
-  transform: scale(1.1);
-}
-
-.chat-footer-clear:active {
-  transform: scale(0.95);
-}
-
 .chat-footer-actions {
   position: relative;
 }
@@ -4228,21 +4208,88 @@ body.light-theme .chat-header h3 {
    ============================================================ */
 
 /* Small screens */
-@media (max-width: 400px) {
+@media (max-width: 480px) {
+  .bottom-nav {
+    height: 56px;
+  }
+
+  .menu-btn {
+    padding: 3px 3px;
+    gap: 1px;
+  }
+
+  .nav-icon {
+    width: 22px;
+    height: 22px;
+    font-size: 1rem;
+  }
+
+  .nav-label {
+    font-size: 0.55rem;
+    letter-spacing: 0.01em;
+  }
+
   .header-inner {
-    padding: 0 var(--space-3);
+    padding: 0 var(--space-2);
+    gap: var(--space-1);
   }
 
-  .header-center {
-    display: none;
+  .header-logo {
+    font-size: var(--text-base);
   }
 
-  .imaginary-grid {
-    grid-template-columns: 1fr;
+  .header-rate {
+    padding: 2px 6px;
+    font-size: 0.6rem;
   }
 
-  .imaginary-card.total-card {
-    grid-column: span 1;
+  .rate-icon {
+    font-size: 0.65rem;
+  }
+
+  .cashea-chip {
+    padding: 2px 6px 2px 3px;
+  }
+
+  .cashea-dot {
+    width: 18px;
+    height: 18px;
+    font-size: 0.55rem;
+  }
+
+  .cashea-chip select {
+    font-size: 0.6rem;
+    max-width: 52px;
+  }
+
+  .header-theme-btn {
+    width: 28px;
+    height: 28px;
+  }
+
+  .header-theme-btn svg {
+    width: 15px;
+    height: 15px;
+  }
+}
+
+body:not(.main-view-active) .cashea-chip {
+  display: none;
+}
+
+@media (max-width: 380px) {
+  .header-rate {
+    font-size: 0.55rem;
+    padding: 1px 5px;
+  }
+
+  .cashea-chip select {
+    max-width: 44px;
+    font-size: 0.55rem;
+  }
+
+  .header-logo {
+    font-size: var(--text-sm);
   }
 }
 
@@ -4512,7 +4559,7 @@ body.light-theme .chat-header h3 {
 }
 
 /* ============================================================
-   SCANNER
+   SCANNER — NO ELIMINAR (reservado para futuro)
    ============================================================ */
 #scannerOverlay {
   z-index: 2000;

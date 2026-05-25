@@ -764,24 +764,4 @@ export function setupChat(): void {
     });
   }
 
-  const faqLink = document.getElementById('chatFaqLink');
-  if (faqLink) {
-    faqLink.addEventListener('click', (e: Event) => {
-      e.preventDefault();
-      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-      const target = document.getElementById('chat-view');
-      if (target) target.classList.add('active');
-      document.body.classList.remove('main-view-active');
-      document.querySelectorAll('.menu-btn').forEach(b => {
-        b.classList.remove('active');
-        b.setAttribute('aria-selected', 'false');
-      });
-      const chatBtn = document.querySelector('.menu-btn[data-view="chat"]');
-      if (chatBtn) {
-        chatBtn.classList.add('active');
-        chatBtn.setAttribute('aria-selected', 'true');
-      }
-      window.scrollTo(0, 0);
-    });
-  }
 }

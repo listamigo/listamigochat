@@ -176,6 +176,8 @@ export function calculateByWeight(): void {
 
   const weightResult = document.getElementById('weightResult');
   if (weightResult) weightResult.classList.add('visible');
+  const addBtn = document.getElementById('weightAddBtn');
+  if (addBtn) addBtn.classList.add('visible');
 }
 
 export function addWeightProductToList(): void {

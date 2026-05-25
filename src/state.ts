@@ -12,6 +12,7 @@ interface AppStateShape {
   savingsGoalData: SavingsGoal | null;
   debts: Debt[];
   settings: AppSettings;
+  /* BARCODE — NO ELIMINAR (reservado para futuro) */
   scannerStream: MediaStream | null;
   scannerActive: boolean;
   notificationReminderInterval: ReturnType<typeof setInterval> | null;
@@ -36,6 +37,7 @@ class Store {
       savingsGoalData: null,
       debts: [],
       settings: { theme: 'dark', dollarRate: 0 },
+      /* BARCODE — NO ELIMINAR (reservado para futuro) */
       scannerStream: null,
       scannerActive: false,
       notificationReminderInterval: null,

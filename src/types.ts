@@ -5,7 +5,7 @@ export interface Product {
   unit: string;
   price: number;
   checked: boolean;
-  barcode?: string;
+  barcode?: string; /* BARCODE — NO ELIMINAR (reservado para futuro) */
 }
 
 export interface ShoppingList {

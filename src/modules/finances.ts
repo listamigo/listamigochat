@@ -6,8 +6,7 @@ import { SAVINGS_TIPS } from '../config/constants';
 import type { Transaction, SavingsContribution, Debt } from '../types';
 import { renderProducts } from './products';
 
-let txIdCounter = Date.now();
-function nextTxId(): number { return ++txIdCounter; }
+function nextTxId(): number { return Date.now() + Math.floor(Math.random() * 10000); }
 
 export function updateTotals(): void {
   const products = AppState.getProducts();
@@ -950,9 +949,9 @@ export function renderDebts(): void {
   const totalPaid = debts.reduce((s, d) => s + d.paidAmount, 0);
   summary.innerHTML = `
     <div class="debt-summary-grid">
-      <span>Total deudas: <strong>$${totalDebt.toFixed(2)}</strong></span>
-      <span>Pagado: <strong>$${totalPaid.toFixed(2)}</strong></span>
-      <span>Restante: <strong>$${(totalDebt - totalPaid).toFixed(2)}</strong></span>
+      <span>Total deudas: <strong>${totalDebt.toFixed(2)}</strong></span>
+      <span>Pagado: <strong>${totalPaid.toFixed(2)}</strong></span>
+      <span>Restante: <strong>${(totalDebt - totalPaid).toFixed(2)}</strong></span>
     </div>
   `;
 
@@ -967,7 +966,7 @@ export function renderDebts(): void {
         <div class="debt-progress"><div class="debt-progress-bar" style="width:${pct}%"></div></div>
         <div class="debt-footer">
           <span>${d.paidAmount.toFixed(2)} / ${d.totalAmount.toFixed(2)} (${pct}%)</span>
-          <span>Cuota: ${d.installments > 0 ? '$' + (d.totalAmount / d.installments).toFixed(2) : '—'}</span>
+          <span>Cuota: ${d.installments > 0 ? (d.currency === 'USD' ? '$' : 'Bs.') + (d.totalAmount / d.installments).toFixed(2) : '—'}</span>
         </div>
         <div class="debt-actions">
           <button class="btn btn-sm btn-primary" data-action="markDebtPayment" data-id="${d.id}">💰 Pagar cuota</button>

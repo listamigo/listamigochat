@@ -87,7 +87,6 @@ function applyBackupData(data: BackupData): void {
   AppState.state.debts = data.debts || [];
   AppState.state.settings.dollarRate = data.dollarRate;
   AppState.state.settings.theme = data.theme || 'dark';
-  AppState.state.debts = data.debts || [];
 
   saveAllBackupData(data);
 }

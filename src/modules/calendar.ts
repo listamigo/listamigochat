@@ -4,8 +4,7 @@ import { escapeHtml, formatUSD, formatDateShort, getCategoryIcon, parseFloatFrom
 import { $empty, showToast, downloadFile, truncate } from '../utils/dom';
 import type { Transaction } from '../types';
 
-let txIdCounter = Date.now();
-function nextTxId(): number { return ++txIdCounter; }
+function nextTxId(): number { return Date.now() + Math.floor(Math.random() * 10000); }
 
 export function renderCalendar(): void {
   const grid = document.getElementById('calGrid');
